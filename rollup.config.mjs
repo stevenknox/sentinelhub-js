@@ -1,4 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import pkg from './package.json' with { type: "json" };
 
 export default {
@@ -11,10 +13,17 @@ export default {
     {
       file: pkg.module,
       format: 'es',
+    },
+    {
+      file: pkg.browser,
+      format: 'umd',
+      name: 'SentinelHub', // Global variable name for UMD build
     }
   ],
   plugins: [
     typescript(),
+    resolve(),
+    commonjs()
   ],
   external: [
     ...Object.keys(pkg.peerDependencies || {}),
